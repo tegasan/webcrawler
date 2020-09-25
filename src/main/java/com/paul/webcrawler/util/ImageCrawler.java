@@ -9,9 +9,11 @@ import edu.uci.ics.crawler4j.parser.BinaryParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class ImageCrawler extends WebCrawler {
-    private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|gif|png|mp3|mp4|zip|gz|pdf))$");
+    //private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|gif|png|mp3|mp4|zip|gz|pdf))$");
     
-    private static final Pattern IMG_PATTERNS = Pattern.compile(".*(\\.(jpg|jpeg))$");
+    private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|mp3|mp4|zip|gz|pdf))$");
+    
+    private static final Pattern IMG_PATTERNS = Pattern.compile(".*(\\.(jpg|jpeg|gif|png))$");
     
     public ImageCrawler() {
 		super();
@@ -31,7 +33,8 @@ public class ImageCrawler extends WebCrawler {
 	    }
 	 
 	    if (IMG_PATTERNS.matcher(urlString).matches() 
-	        || urlString.startsWith("https://www.disney.com/")) {
+	        || urlString.startsWith("https://www.wipro.com")) {
+	    	//System.out.println("urlString: " + urlString);
 	        return true;
 	    }
  
@@ -47,7 +50,7 @@ public class ImageCrawler extends WebCrawler {
 	        int contentLength = page.getContentData().length;
 	 
 	        // write the content data to a file in the save directory
-	        System.out.println(url + " | " + contentLength + " | " + extension);
+	        System.out.println("image url:" + url + " | size:" + contentLength + " | type: " + extension);
 	        		
 	    }
 	}

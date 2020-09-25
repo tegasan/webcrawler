@@ -22,24 +22,29 @@ public class WebCrawlerService {
 		
 		WebUrlResponse webUrlResponse = new WebUrlResponse();
 		
-		
-		File crawlStorageBase = new File("src/main/resources/crawler4j");
-		CrawlConfig htmlConfig = new CrawlConfig();
-		CrawlConfig imageConfig = new CrawlConfig();
-		        
 		// Configure storage folders and other configurations
-		htmlConfig.setCrawlStorageFolder(crawlStorageBase.getAbsolutePath());
-		imageConfig.setCrawlStorageFolder(crawlStorageBase.getAbsolutePath());
+		File crawlStorageBaseHtml = new File("src/main/resources/crawler4jHtml");
+		File crawlStorageBaseImage = new File("src/main/resources/crawler4jImage");
 		
-		htmlConfig.setMaxDepthOfCrawling(2);
-		htmlConfig.setMaxPagesToFetch(500);
-		htmlConfig.setIncludeHttpsPages(false);
+		//html config
+		CrawlConfig htmlConfig = new CrawlConfig();
+		htmlConfig.setCrawlStorageFolder(crawlStorageBaseHtml.getAbsolutePath());
+		htmlConfig.setMaxDepthOfCrawling(1);
+		htmlConfig.setMaxPagesToFetch(200);
 
+		htmlConfig.setCleanupDelaySeconds(2);		
+		htmlConfig.setThreadShutdownDelaySeconds(2);
+		htmlConfig.setIncludeHttpsPages(true);		
 
-		imageConfig.setMaxDepthOfCrawling(2);
-		imageConfig.setMaxPagesToFetch(500);
-		imageConfig.setIncludeBinaryContentInCrawling(true);
+		//image config		
+		CrawlConfig imageConfig = new CrawlConfig();
+		imageConfig.setCrawlStorageFolder(crawlStorageBaseImage.getAbsolutePath());
+		imageConfig.setMaxDepthOfCrawling(1);
+		imageConfig.setMaxPagesToFetch(200);
 
+		imageConfig.setCleanupDelaySeconds(2);
+		imageConfig.setThreadShutdownDelaySeconds(2);
+		imageConfig.setIncludeBinaryContentInCrawling(true);		
 		
 		PageFetcher pageFetcherHtml = new PageFetcher(htmlConfig);
 		PageFetcher pageFetcherImage = new PageFetcher(imageConfig);
@@ -48,19 +53,17 @@ public class WebCrawlerService {
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcherHtml);
 		 
 		CrawlController htmlController = new CrawlController(htmlConfig, pageFetcherHtml, robotstxtServer);
-		CrawlController imageController = new CrawlController(imageConfig, pageFetcherImage, robotstxtServer);
-		        
+		CrawlController imageController = new CrawlController(imageConfig, pageFetcherImage, robotstxtServer);				       
+		
 		// add seed URLs
-		htmlController.addSeed("https://www.disney.com/");
-		imageController.addSeed("https://www.disney.com/");
+		htmlController.addSeed("https://www.wipro.com/");
+		imageController.addSeed("https://www.wipro.com/");
 
 		CrawlerStatistics stats = new CrawlerStatistics();
-		//CrawlController.WebCrawlerFactory<HtmlCrawler> htmlFactory = () -> new HtmlCrawler(stats);
-		CrawlController.WebCrawlerFactory<HtmlCrawler> htmlFactory = HtmlCrawler::new;
+		CrawlController.WebCrawlerFactory<HtmlCrawler> htmlFactory = () -> new HtmlCrawler(stats);
 		        
 		File saveDir = new File("src/test/resources/crawler4j");
-		//CrawlController.WebCrawlerFactory<ImageCrawler> imageFactory = () -> new ImageCrawler(saveDir);
-		CrawlController.WebCrawlerFactory<ImageCrawler> imageFactory = ImageCrawler::new;
+		CrawlController.WebCrawlerFactory<ImageCrawler> imageFactory = () -> new ImageCrawler(saveDir);
 				
 		imageController.startNonBlocking(imageFactory, 8);
 		htmlController.startNonBlocking(htmlFactory, 8);

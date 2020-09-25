@@ -25,9 +25,10 @@ public class HtmlCrawler extends WebCrawler {
 
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
-	    String urlString = url.getURL().toLowerCase();
+	    String urlString = url.getURL().toLowerCase();  
 	    return !EXCLUSIONS.matcher(urlString).matches() 
-	      && urlString.startsWith("https://www.disney.com/");
+	      && urlString.startsWith("https://www.wipro.com");
+	    
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ public class HtmlCrawler extends WebCrawler {
 	        String html = htmlParseData.getHtml();
 	        Set<WebURL> links = htmlParseData.getOutgoingUrls();
 	 
-	        System.out.println(title + " | " + text + " | " + html);
+	        System.out.println("webpage url: " + url); 
 	        // do something with the collected data
 	    
 	    }
