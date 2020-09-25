@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Show message</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h1>Result</h1>
+
+<p th:text="'URL: ' + ${webUrlRequest.startUrl}"></p>
+<p th:text="'Depth: ' + ${webUrlRequest.depthCrawl}"></p>
+<a href="/pages">Crawl another website</a>
+
+</body>
+</html>
