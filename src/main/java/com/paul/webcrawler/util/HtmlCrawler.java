@@ -12,11 +12,22 @@ public class HtmlCrawler extends WebCrawler {
 
 	private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|gif|jpg|png|mp3|mp4|zip|gz|pdf))$");
 
+	public HtmlCrawler(CrawlerStatistics stats) {
+		// TODO Auto-generated constructor stub
+	}
+
+	
+	public HtmlCrawler() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 	    String urlString = url.getURL().toLowerCase();
 	    return !EXCLUSIONS.matcher(urlString).matches() 
-	      && urlString.startsWith("https://www.wipro.com/");
+	      && urlString.startsWith("https://www.disney.com/");
 	}
 	
 	@Override
@@ -30,6 +41,7 @@ public class HtmlCrawler extends WebCrawler {
 	        String html = htmlParseData.getHtml();
 	        Set<WebURL> links = htmlParseData.getOutgoingUrls();
 	 
+	        System.out.println(title + " | " + text + " | " + html);
 	        // do something with the collected data
 	    
 	    }
