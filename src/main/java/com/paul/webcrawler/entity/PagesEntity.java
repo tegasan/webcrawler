@@ -43,10 +43,10 @@ public class PagesEntity implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public LocalDateTime getCrawl_date() {
+	public LocalDateTime getCrawlDate() {
 		return crawlDate;
 	}
-	public void setcrawlDate(LocalDateTime crawlDate) {
+	public void setCrawlDate(LocalDateTime crawlDate) {
 		this.crawlDate = crawlDate;
 	}
 	public PagesEntity() {

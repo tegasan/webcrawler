@@ -19,7 +19,7 @@ public class ImageCrawler extends WebCrawler {
     private static final Pattern IMG_PATTERNS = Pattern.compile(".*(\\.(jpg|jpeg|gif|png))$");
 	private File saveDir;
 	private List<PagesEntity> listPagesEntity = new ArrayList<PagesEntity>();
-	
+	private String urlSeed=null;
    
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
@@ -27,10 +27,9 @@ public class ImageCrawler extends WebCrawler {
 	    if (EXCLUSIONS.matcher(urlString).matches()) {
 	        return false;
 	    }
-	 
+	    
 	    if (IMG_PATTERNS.matcher(urlString).matches() 
-	        || urlString.startsWith("https://www.wipro.com")) {
-	    	//System.out.println("urlString: " + urlString);
+	        || urlString.startsWith(urlSeed)) {
 	        return true;
 	    }
  
@@ -49,8 +48,9 @@ public class ImageCrawler extends WebCrawler {
 	        // write the content data to a file in the save directory
 	        System.out.println("image url:" + url + " | size:" + contentLength + " | type: " + extension);
 	        PagesEntity pagesEntity = new PagesEntity();
-	        pagesEntity.setCrawl_date(dateTime);
+	        pagesEntity.setCrawlDate(dateTime);
 	        pagesEntity.setType("IMAGE URL");
+	        url = url.length()>255?url.substring(0, 255):url;
 	        pagesEntity.setUrl(url);
 	        listPagesEntity.add(pagesEntity);
 	    }
@@ -72,13 +72,23 @@ public class ImageCrawler extends WebCrawler {
 		this.listPagesEntity = listPagesEntity;
 	}
 
-    public ImageCrawler() {
+	
+    public String getUrlSeed() {
+		return urlSeed;
+	}
+
+	public void setUrlSeed(String urlSeed) {
+		this.urlSeed = urlSeed;
+	}
+
+	public ImageCrawler() {
 		super();
 	}
 
-    public ImageCrawler(File saveDir, List<PagesEntity> listPagesEntity) {
+    public ImageCrawler(File saveDir, List<PagesEntity> listPagesEntity, String urlSeed) {
 		//super();
 		this.saveDir = saveDir;
 		this.listPagesEntity = listPagesEntity;
+		this.urlSeed = urlSeed;
 	}
 }

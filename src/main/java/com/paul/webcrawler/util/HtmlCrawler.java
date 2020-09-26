@@ -17,12 +17,13 @@ public class HtmlCrawler extends WebCrawler {
 
 	private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|gif|jpg|png|mp3|mp4|zip|gz|pdf))$");
 	private List<PagesEntity> listPagesEntity = new ArrayList<PagesEntity>();
+	private String urlSeed=null;
 	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 	    String urlString = url.getURL().toLowerCase();  
 	    return !EXCLUSIONS.matcher(urlString).matches() 
-	      && urlString.startsWith("https://www.wipro.com");
+	      && urlString.startsWith(urlSeed);
 	}
 	
 	@Override
@@ -36,12 +37,12 @@ public class HtmlCrawler extends WebCrawler {
 	        //String html = htmlParseData.getHtml();
 	        Set<WebURL> links = htmlParseData.getOutgoingUrls();
 	 
-	        System.out.println("webpage url: " + url); 
-	        System.out.println("dateTime: " + dateTime);
+	        System.out.println("web url: " + url); 
 			// do something with the collected data
 	        PagesEntity pagesEntity = new PagesEntity();
-	        pagesEntity.setCrawl_date(dateTime);
+	        pagesEntity.setCrawlDate(dateTime);
 	        pagesEntity.setType("WEB URL");
+	        url = url.length()>255?url.substring(0, 255):url;
 	        pagesEntity.setUrl(url);
 	        listPagesEntity.add(pagesEntity);
 	    }
@@ -54,13 +55,22 @@ public class HtmlCrawler extends WebCrawler {
 	public void setListPagesEntity(List<PagesEntity> listPagesEntity) {
 		this.listPagesEntity = listPagesEntity;
 	}
+
+    public String getUrlSeed() {
+		return urlSeed;
+	}
+
+	public void setUrlSeed(String urlSeed) {
+		this.urlSeed = urlSeed;
+	}
 	
 	public HtmlCrawler() {
 		super();
 	}
 
-	public HtmlCrawler(CrawlerStatistics stats, List<PagesEntity> listPagesEntity) {
+	public HtmlCrawler(CrawlerStatistics stats, List<PagesEntity> listPagesEntity, String urlSeed) {
 		super();
 		this.listPagesEntity = listPagesEntity;
+		this.urlSeed = urlSeed;
 	}	
 }

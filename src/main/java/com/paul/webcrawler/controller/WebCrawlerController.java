@@ -18,8 +18,6 @@ public class WebCrawlerController {
 	
     @GetMapping("/pages")
     public String startForm(WebUrlRequest webUrlRequest) {
-    		
-    		System.out.println("test me");
         return "start";
     }
     
@@ -27,9 +25,7 @@ public class WebCrawlerController {
 	public String createPages(WebUrlRequest webUrlRequest) throws Exception {
 		WebUrlResponse webUrlResponse = new WebUrlResponse();
 		webUrlResponse = webCrawlerService.crawlWebPages(webUrlRequest);
-		System.out.println("url: " + webUrlRequest.getStartUrl());
-		System.out.println("depth: " + webUrlRequest.getDepthCrawl());
-		
+		System.out.println("End of Web Crawling");
 		return "response";
 		
 	}
