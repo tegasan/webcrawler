@@ -1,9 +1,14 @@
 package com.paul.webcrawler.service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.paul.webcrawler.controller.repository.WebCrawlerRepository;
+import com.paul.webcrawler.entity.PagesEntity;
 import com.paul.webcrawler.model.WebUrlRequest;
 import com.paul.webcrawler.model.WebUrlResponse;
 import com.paul.webcrawler.util.CrawlerStatistics;
@@ -18,8 +23,12 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 @Service
 public class WebCrawlerService {
+	
+	@Autowired
+	WebCrawlerRepository webCrawlerRepository;
+	
 	public WebUrlResponse crawlWebPages(WebUrlRequest webUrlRequest) throws Exception {
-		
+
 		WebUrlResponse webUrlResponse = new WebUrlResponse();
 		
 		// Configure storage folders and other configurations
@@ -59,11 +68,14 @@ public class WebCrawlerService {
 		htmlController.addSeed("https://www.wipro.com/");
 		imageController.addSeed("https://www.wipro.com/");
 
+		PagesEntity pagesEntity = new PagesEntity(); 
+		List<PagesEntity> listPagesEntity = new ArrayList<PagesEntity>();
+		
 		CrawlerStatistics stats = new CrawlerStatistics();
-		CrawlController.WebCrawlerFactory<HtmlCrawler> htmlFactory = () -> new HtmlCrawler(stats);
+		CrawlController.WebCrawlerFactory<HtmlCrawler> htmlFactory = () -> new HtmlCrawler(stats, listPagesEntity);
 		        
 		File saveDir = new File("src/test/resources/crawler4j");
-		CrawlController.WebCrawlerFactory<ImageCrawler> imageFactory = () -> new ImageCrawler(saveDir);
+		CrawlController.WebCrawlerFactory<ImageCrawler> imageFactory = () -> new ImageCrawler(saveDir, listPagesEntity);
 				
 		imageController.startNonBlocking(imageFactory, 8);
 		htmlController.startNonBlocking(htmlFactory, 8);
@@ -71,7 +83,7 @@ public class WebCrawlerService {
 		
 		htmlController.waitUntilFinish();
 		imageController.waitUntilFinish();	
-		
+		webCrawlerRepository.saveAll(listPagesEntity);	
 			
 		return webUrlResponse;
 	}

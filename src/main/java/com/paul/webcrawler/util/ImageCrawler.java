@@ -1,7 +1,12 @@
 package com.paul.webcrawler.util;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import com.paul.webcrawler.entity.PagesEntity;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -10,21 +15,12 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class ImageCrawler extends WebCrawler {
     //private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|gif|png|mp3|mp4|zip|gz|pdf))$");
-    
     private final static Pattern EXCLUSIONS = Pattern.compile(".*(\\.(css|js|xml|mp3|mp4|zip|gz|pdf))$");
-    
     private static final Pattern IMG_PATTERNS = Pattern.compile(".*(\\.(jpg|jpeg|gif|png))$");
-    
-    public ImageCrawler() {
-		super();
-	}
-
 	private File saveDir;
-    
-    public ImageCrawler(File saveDir) {
-        this.setSaveDir(saveDir);
-    }
-  
+	private List<PagesEntity> listPagesEntity = new ArrayList<PagesEntity>();
+	
+   
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 	    String urlString = url.getURL().toLowerCase();
@@ -42,7 +38,8 @@ public class ImageCrawler extends WebCrawler {
 	}
     
 	@Override
-	public void visit(Page page) {
+	public void visit(Page page) { 
+	    LocalDateTime dateTime = LocalDateTime.now(); 
 	    String url = page.getWebURL().getURL();
 	    if (IMG_PATTERNS.matcher(url).matches() 
 	        && page.getParseData() instanceof BinaryParseData) {
@@ -51,7 +48,11 @@ public class ImageCrawler extends WebCrawler {
 	 
 	        // write the content data to a file in the save directory
 	        System.out.println("image url:" + url + " | size:" + contentLength + " | type: " + extension);
-	        		
+	        PagesEntity pagesEntity = new PagesEntity();
+	        pagesEntity.setCrawl_date(dateTime);
+	        pagesEntity.setType("IMAGE URL");
+	        pagesEntity.setUrl(url);
+	        listPagesEntity.add(pagesEntity);
 	    }
 	}
 
@@ -61,5 +62,23 @@ public class ImageCrawler extends WebCrawler {
 
 	public void setSaveDir(File saveDir) {
 		this.saveDir = saveDir;
+	}
+
+	public List<PagesEntity> getListPagesEntity() {
+		return listPagesEntity;
+	}
+
+	public void setListPagesEntity(List<PagesEntity> listPagesEntity) {
+		this.listPagesEntity = listPagesEntity;
+	}
+
+    public ImageCrawler() {
+		super();
+	}
+
+    public ImageCrawler(File saveDir, List<PagesEntity> listPagesEntity) {
+		//super();
+		this.saveDir = saveDir;
+		this.listPagesEntity = listPagesEntity;
 	}
 }
