@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.paul.webcrawler.controller.repository.WebCrawlerRepository;
@@ -27,7 +28,7 @@ public class WebCrawlerService {
 	@Autowired
 	WebCrawlerRepository webCrawlerRepository;
 	
-	public WebUrlResponse crawlWebPages(WebUrlRequest webUrlRequest) throws Exception {
+	public void crawlWebPages(WebUrlRequest webUrlRequest) throws Exception {
 
 		WebUrlResponse webUrlResponse = new WebUrlResponse();
 		
@@ -99,10 +100,19 @@ public class WebCrawlerService {
 		htmlController.shutdown();
 		imageController.shutdown();
 		
-			
-		return webUrlResponse;
+		//return webUrlResponse;
 	}
 	
+	public List<PagesEntity> getResult() {
+
+		WebUrlResponse webUrlResponse = new WebUrlResponse();
+		//PagesEntity pagesEntity = new PagesEntity(); 
+		List<PagesEntity> listPagesEntity = new ArrayList<PagesEntity>();		
+
+		listPagesEntity = webCrawlerRepository.findAll(Sort.by("type").descending());
+		
+		return listPagesEntity;
+	}
 }
 
 

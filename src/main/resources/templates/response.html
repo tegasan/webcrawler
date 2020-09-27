@@ -1,17 +1,72 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<style>
+	
+		h1{font-size:36px} h2{font-size:30px} h3{font-size:24px} h4{font-size:20px} h5{font-size:18px} h6{font-size:16px}
+		
+		html, body, h1, h2, h3, h4, h5, h6 {
+  		font-family: Calibri; color: #233752;
+		}
+		
+		.pt-table {
+		  border: solid 1px #DDEEEE;
+		  border-collapse: collapse;
+		  border-spacing: 0;
+		}
+		
+		.pt-table thead th {
+		  background-color: #a7d0e8;
+		  border: solid 1px #DDEEEE;
+		  color: #233752;
+		  padding: 12px;
+		  text-align: left;
+		  text-shadow: 1px 1px 1px #fff;
+		  font: strong 18px Calibri;
+		}
+		
+		.pt-table tbody td {
+		  border: solid 1px #DDEEEE;
+		  color: #333;
+		  padding: 10px;
+		  text-shadow: 1px 1px 1px #fff;
+		  font: normal 14px Calibri;
+		}
+			
+		.pt-table tr:nth-child(even) 
+		{background-color: #f2f2f2;
+		}
+	</style>
+
     <title>Show message</title>
     <meta charset="UTF-8">
 </head>
-<body onload='document.body.style.cursor = "default";'>
-<script>document.body.style.cursor = "wait";</script>
 
+<body>
+<center>
 <h1>Result</h1>
 
-<p th:text="'URL: ' + ${webUrlRequest.startUrl}"></p>
-<p th:text="'Depth: ' + ${webUrlRequest.depthCrawl}"></p>
-<a href="/pages">Crawl another website</a>
+<H5><button onclick="document.location='/pages'">Try Another Website</button></H5>
 
+<table class="pt-table">
+    <thead>
+        <tr>
+        	<th> No. </th>
+            <th> Type </th>
+            <th> URL </th>
+        </tr>
+    </thead>
+    <tbody>
+	<tr th:if="${pages.empty}">
+            <td colspan="2" align="center"><span  style="color:#233752;font-weight:bold"> No Result, the website prohibits webcrawler</span></td>
+        </tr>
+        <tr th:each="page, itemStat : ${pages}">
+        	<td><span th:text="${itemStat.index}"> </span></td>
+            <td NOWRAP><span th:text="${page.type}"> </span></td>
+            <td><span th:text="${page.url}"> </span></td>
+        </tr>
+    </tbody>
+</table>
+</center>
 </body>
 </html>

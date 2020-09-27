@@ -1,26 +1,59 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<style>
+	
+		h1{font-size:36px} h2{font-size:30px} h3{font-size:24px} h4{font-size:20px} h5{font-size:18px} h6{font-size:16px}
+		
+		html, body, h1, h2, h3, h4, h5, h6 {
+  		font-family: Calibri; color: #233752;
+		}
+		
+		.pt-table {
+		  border: solid 1px #DDEEEE;
+		  border-collapse: collapse;
+		  border-spacing: 0;
+		}
+		
+		.pt-table thead th {
+		  background-color: #a7d0e8;
+		  border: solid 1px #DDEEEE;
+		  color: #233752;
+		  padding: 12px;
+		  text-align: left;
+		  text-shadow: 1px 1px 1px #fff;
+		  font: strong 18px Calibri;
+		}
+		
+		.pt-table tbody td {
+		  border: solid 1px #DDEEEE;
+		  color: #333;
+		  padding: 10px;
+		  text-shadow: 1px 1px 1px #fff;
+		  font: normal 14px Calibri;
+		}
+			
+	</style>
+
     <title>Start Web Crawler</title>
     <meta charset="UTF-8">
 </head>
 
-<body onload='document.body.style.cursor = "default";'>
-<script>document.body.style.cursor = "wait";</script>
-
+<body>
+<center>
 <h1>Web Crawler</h1>
 
 <form action="#" th:action="@{/pages}" th:object="${webUrlRequest}" method="post">
-    <p>
-        Start URL: <input type="text" th:field="*{startUrl}">
-    </p>
-    <p>
-        Depth of Crawl: <input type="text" th:field="*{depthCrawl}">
-    </p>
-    <p>
-        <input type="submit" value="Start"/> <input type="reset" value="Reset">
-    </p>
-</form>
 
+	<table class="pt-table">
+    <tr>
+        <td>Website To Crawl: </td><td><input type="text" th:field="*{startUrl}" size=25></td>
+	<tr>
+        <td>How Depth To Crawl: </td><td><input type="text" th:field="*{depthCrawl}" size=1></td>
+	<tr>
+        <td></td><td><input type="submit" value="Start Crawling" onclick="document.body.style.cursor='wait'; return true;"/> </td>
+    </table>
+</form>
+</center>
 </body>
 </html>
