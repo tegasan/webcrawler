@@ -32,7 +32,10 @@ How to run it in eclipse
 
 Improvement:
 	- form input field validation
-	- add more crawling configurable input
+	- add more crawling configurable input. Ex. options to configure:
+		- Max. Pages to be crawled (currently set to max 500 pages)
+		- Number of thread (currently set to 8)
+		- Connection timeout
 	- add swagger+api doc for documentation
 	- using pesistants database (mysql) for data discovery and analysis
 	- make url result as a link
